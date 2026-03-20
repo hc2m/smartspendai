@@ -27,4 +27,4 @@ async def auth_google(request: Request):
     token = await oauth.google.authorize_access_token(request)
     user = token.get("userinfo")
 
-    return {"email": user["email"], "name": user["name"]}
+    return {"email": user["email"], "name": user["name"], "picture": user["picture"]}
