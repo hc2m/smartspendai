@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from app.database.database import engine, Base
-from app.routes import auth_routes
+from app.routes import auth_routes, auth_google
 
 app = FastAPI(title="SmartSpend AI")
+app.include_router(auth_google.router)
 
 @app.on_event("startup")
 def on_startup():
