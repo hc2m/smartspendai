@@ -24,13 +24,18 @@ app.add_middleware(
 )
 
 # this is importent after imddleware add then include_router
-from app.routes import auth_google
+from app.routes import auth_google,auth
 app.include_router(auth_google.router)
+app.include_router(auth.router)
 
 
 @app.on_event("startup")
 def on_startup():
-    Base.metadata.create_all(bind = engine)
+    try:
+        Base.metadata.create_all(bind = engine)
+        print("Database connected")
+    except Exception as e:
+        print("Database connection faild:", e)
 
 app.include_router(auth_routes.router)
 
