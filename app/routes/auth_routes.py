@@ -31,7 +31,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     existing_user = db.query(User).filter((User.email == user.email.lower()) | (User.username == user.username)).first()
     if existing_user:
-        raise HTTPException(status_code=400, detail=f"User already exists please login with{existing_user.provider}")
+        raise HTTPException(status_code=400, detail=f"User already exists please login with {existing_user.provider}")
     
     # fix later if not user.password return HTTPExpectation error (password must be filled)
 

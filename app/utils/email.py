@@ -1,10 +1,10 @@
-import smtplib
-from email.mime.text import MIMEText
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 import os
 
 EMAIL = os.getenv("EMAIL")
-APP_PASSWORD = os.getenv("APP_PASSWORD")
+API_KEY = os.getenv("SENDGRID_API_KEY")
 
 def send_otp_email(to_email, otp):
     html = f"""
@@ -21,13 +21,18 @@ def send_otp_email(to_email, otp):
         </body>
     </html>
     """
-    msg = MIMEText(html,"html")
-    msg["Subject"] = "SmartSpend AI - Password Reset OTP"
-    msg["From"] = EMAIL
-    msg["To"] = to_email
 
-    server = smtplib.SMTP("smtp.gmail.com",587)
-    server.starttls()
-    server.login(EMAIL,APP_PASSWORD)
-    server.send_message(msg)
-    server.quit()
+    try:
+        message = Mail(
+            from_email=EMAIL,
+            to_emails=to_email,
+            subject="Password Reset OTP",
+            html_content=html
+        )
+
+        sg = SendGridAPIClient(api_key=API_KEY)
+        response = sg.send(message=message)
+
+        print("Email sent: ", response.status_code)
+    except Exception as e:
+        print("Email error: ", str(e))
