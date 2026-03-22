@@ -24,9 +24,11 @@ app.add_middleware(
 )
 
 # this is importent after imddleware add then include_router
-from app.routes import auth_google,auth
+from app.routes import auth_google,auth,income_routes,expense_routes
 app.include_router(auth_google.router)
 app.include_router(auth.router)
+app.include_router(income_routes.router)
+app.include_router(expense_routes.router)
 
 
 @app.on_event("startup")
