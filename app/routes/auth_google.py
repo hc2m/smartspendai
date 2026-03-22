@@ -53,7 +53,7 @@ async def auth_google(request: Request, db: Session = Depends(get_db)):
         db.refresh(user)
 
     # create 🔑 jwt using handler 
-    access_token = create_access_token({"sub":user.email})
+    access_token = create_access_token({"user_id":user.id, "email": user.email})
 
     return{
         "access_token": access_token,
