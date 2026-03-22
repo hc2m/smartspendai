@@ -18,3 +18,7 @@ class User(Base):
 
     reset_otp = Column(String, nullable=True)
     otp_expiry = Column(DateTime, nullable=True)
+
+    otp_verified = Column(Boolean, default=False)
+    reset_token = Column(String, nullable=True)
+    reset_token_expiry = Column(TIMESTAMP, nullable=True)
