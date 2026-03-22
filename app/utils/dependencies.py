@@ -14,6 +14,7 @@ def get_current_user(token: str, db: Session = Depends(get_db)):
         payload = jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
         user_id = payload.get("user_id")
         email = payload.get("email")
+        print(payload)
         print("user_id = ",user_id)
         print(email)
     except:
