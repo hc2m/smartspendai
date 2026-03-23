@@ -41,6 +41,8 @@ def verify_otp(data:VerifyOtpRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.email == data.email).first()
 
+    print("/verify-otp user", user)
+
     if not user or not user.reset_otp:
         return {"error": "Invalid request"}
     
@@ -58,7 +60,7 @@ def verify_otp(data:VerifyOtpRequest, db: Session = Depends(get_db)):
     user.reset_token = token
     user.reset_token_expiry = datetime.utcnow() + timedelta(minutes=10)
 
-    return {"message": "OTP verified",
+    return {"success": "OTP verified",
             "reset_token": token
             }
 
@@ -95,5 +97,5 @@ def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
 
     db.commit()
     
-    return {"message": "Password reset successful"}
+    return {"success": "Password reset successful"}
 
