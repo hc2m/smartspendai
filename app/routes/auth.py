@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.routes.auth_routes import get_db
 from app.models.user import User
@@ -20,7 +20,7 @@ def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data.email).first()
 
     if not user:
-        return {"error": "user not exist"}
+        HTTPException(status_code=401, detail="user not found")
 
     otp = generate_otp()
     hashed = hash_otp(otp=otp)
