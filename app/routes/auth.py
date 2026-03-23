@@ -60,6 +60,8 @@ def verify_otp(data:VerifyOtpRequest, db: Session = Depends(get_db)):
     user.reset_token = token
     user.reset_token_expiry = datetime.utcnow() + timedelta(minutes=10)
 
+    db.commit()
+
     return {"success": "OTP verified",
             "reset_token": token
             }
