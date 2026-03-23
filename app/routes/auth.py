@@ -19,18 +19,20 @@ def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.email == data.email).first()
 
-    if user:
-        otp = generate_otp()
-        hashed = hash_otp(otp=otp)
+    if not user:
+        return {"error": "user not exist"}
 
-        user.reset_otp = hashed
-        user.otp_expiry = datetime.utcnow() + timedelta(minutes=5)
-        db.commit()
+    otp = generate_otp()
+    hashed = hash_otp(otp=otp)
 
-        send_otp_email(data.email,otp)
+    user.reset_otp = hashed
+    user.otp_expiry = datetime.utcnow() + timedelta(minutes=5)
+    db.commit()
 
-        print("Sending OTP to", data.email)
-        print("OTP", otp)  # remove it letter 
+    send_otp_email(data.email,otp)
+
+    print("Sending OTP to", data.email)
+    print("OTP", otp)  # remove it letter 
     
     return({"message": "If email exists, OTP sent"}) 
 
