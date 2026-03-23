@@ -63,7 +63,7 @@ def verify_otp(data:VerifyOtpRequest, db: Session = Depends(get_db)):
 @router.post("/auth/reset-password")
 def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
 
-    user = db.query(User).filter(User.email == data.email).first()
+    user = db.query(User).filter(User.reset_token == data.reset_token).first()
 
     if not user:
         return {"error": "Invalid request"}
