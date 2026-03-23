@@ -67,6 +67,8 @@ def reset_password(data: ResetPasswordRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.reset_token == data.reset_token).first()
 
+    print(user)
+
     if not user:
         return {"error": "Invalid request"}
     
