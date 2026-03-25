@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from app.database.database import SessionLocal
@@ -9,6 +9,12 @@ from app.utils.jwt_handler import create_access_token
 
 import time
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+IS_PRODUCTION = os.getenv("ENV") == "production"
 
 # Brout force 
 
@@ -46,7 +52,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return {"message": "User created"}
 
 @router.post("/login")
-def login(user: UserLogin, db:Session = Depends(get_db)):
+def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
 
     email = user.email.lower()
     current_time = time.time()
@@ -91,4 +97,21 @@ def login(user: UserLogin, db:Session = Depends(get_db)):
     
     token = create_access_token({"user_id": db_user.id,"email": db_user.email})
 
-    return {"access_token": token, "token_type": "bearer"}
+    # set httpOnly cookie
+
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=IS_PRODUCTION,
+        samesite="none" if IS_PRODUCTION else "lax",
+        max_age=3600
+    )
+
+    # return {"access_token": token, "token_type": "bearer"}
+    return {"message": "Login successful"}
+
+@router.post("/logout")
+def logout(response: Response):
+    response.delete_cookie("access_token")
+    return {"message": "Logged out"}
