@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.routes.auth_routes import get_db
+from app.database.database import get_db
 from app.models.user import User
 from app.utils.otp import generate_otp
 from app.utils.email import send_otp_email

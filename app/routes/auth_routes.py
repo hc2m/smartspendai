@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
-from app.database.database import SessionLocal
+from app.database.database import get_db
 from app.models.user import User
 from app.schemas.user_schema import UserCreate, UserLogin
 from app.utils.password_hash import hash_password, verify_password
 from app.utils.jwt_handler import create_access_token
 from app.utils.dependencies import get_current_user
+
 
 import time
 from datetime import datetime, timedelta
@@ -26,12 +27,7 @@ BLOCK_TIME = 60   # sec
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+
     
 @router.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):

@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.models.expense import Expense
 from app.schemas.expense_schema import ExpenseCreate
-from app.utils.dependencies import get_current_user, get_db
+from app.utils.dependencies import get_current_user
+from app.database.database import get_db
 
 router = APIRouter(prefix="/expense", tags=["Expense"])
 

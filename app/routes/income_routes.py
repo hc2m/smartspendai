@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.models.income import Income
 from app.schemas.income_schema import IncomeCreate
-from app.utils.dependencies import get_db, get_current_user
+from app.utils.dependencies import get_current_user
+from app.database.database import get_db
 
 router = APIRouter(prefix="/income", tags=["Income"])
 
