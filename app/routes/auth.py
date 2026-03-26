@@ -31,8 +31,8 @@ def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
 
     send_otp_email(data.email,otp)
 
-    print("Sending OTP to", data.email)
-    print("OTP", otp)  # remove it letter 
+    # print("Sending OTP to", data.email)
+    # print("OTP", otp)  # remove it letter 
     
     return({"success": "If email exists, OTP sent"}) 
 
@@ -41,7 +41,6 @@ def verify_otp(data:VerifyOtpRequest, db: Session = Depends(get_db)):
 
     user = db.query(User).filter(User.email == data.email).first()
 
-    print("/verify-otp user", user)
 
     if not user or not user.reset_otp:
         return {"error": "Invalid request"}

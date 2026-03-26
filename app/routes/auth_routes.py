@@ -6,6 +6,7 @@ from app.models.user import User
 from app.schemas.user_schema import UserCreate, UserLogin
 from app.utils.password_hash import hash_password, verify_password
 from app.utils.jwt_handler import create_access_token
+from app.utils.dependencies import get_current_user
 
 import time
 from datetime import datetime, timedelta
@@ -114,4 +115,12 @@ def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
 @router.post("/logout")
 def logout(response: Response):
     response.delete_cookie("access_token")
-    return {"message": "Logged out"}
+    return {"success": "Logged out"}
+
+@router.get("/me")
+def get_me(user: User = Depends(get_current_user)):
+    return {
+        "id": user.id,
+        "email": user.email,
+        "username": user.username
+    }
