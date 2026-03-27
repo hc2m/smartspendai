@@ -12,7 +12,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://smartspendai.org"
+        "https://smartspendai.org",
+        "https://www.smartspendai.org"
 
     ],
     allow_credentials = True,
