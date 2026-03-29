@@ -67,7 +67,7 @@ async def auth_google(request: Request, response: Response, db: Session = Depend
         secure=IS_PRODUCTION,
         samesite="none" if IS_PRODUCTION else "lax",
         max_age=3600,
-        domain=".smartspendai.org",
+        domain=".smartspendai.org" if IS_PRODUCTION else None,
         path="/"
     )
 

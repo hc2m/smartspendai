@@ -105,7 +105,7 @@ def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
         secure=IS_PRODUCTION,
         samesite="none" if IS_PRODUCTION else "lax",
         max_age=3600,
-        domain=".smartspendai.org",
+        domain=".smartspendai.org" if IS_PRODUCTION else None,
         path="/"
     )
 
