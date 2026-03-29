@@ -104,7 +104,9 @@ def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
         httponly=True,
         secure=IS_PRODUCTION,
         samesite="none" if IS_PRODUCTION else "lax",
-        max_age=3600
+        max_age=3600,
+        domain=".smartspendai.org",
+        path="/"
     )
 
     # return {"access_token": token, "token_type": "bearer"}
