@@ -5,7 +5,7 @@ from app.database.database import get_db
 from app.models.user import User
 from app.schemas.user_schema import UserCreate, UserLogin
 from app.utils.password_hash import hash_password, verify_password
-from app.utils.jwt_handler import create_access_token
+from app.utils.jwt_handler import create_access_token, create_refresh_token
 from app.utils.dependencies import get_current_user
 
 
@@ -93,18 +93,30 @@ def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
     db_user.lock_until = None
     db.commit()
 
-    
-    token = create_access_token({"user_id": db_user.id,"email": db_user.email})
+    # create token
+    access_token = create_access_token({"user_id": db_user.id,"email": db_user.email})
+    refresh_token = create_refresh_token({"user_id": db_user.id, "email": db_user.email})
 
     # set httpOnly cookie
 
     response.set_cookie(
         key="access_token",
-        value=token,
+        value=access_token,
         httponly=True,
         secure=IS_PRODUCTION,
         samesite="none" if IS_PRODUCTION else "lax",
-        max_age=3600,
+        max_age=900,
+        domain=".smartspendai.org" if IS_PRODUCTION else None,
+        path="/"
+    )
+
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=IS_PRODUCTION,
+        samesite="none" if IS_PRODUCTION else "lax",
+        max_age=900,
         domain=".smartspendai.org" if IS_PRODUCTION else None,
         path="/"
     )
@@ -115,6 +127,7 @@ def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
 @router.post("/logout")
 def logout(response: Response):
     response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
     return {"success": "Logged out"}
 
 @router.get("/me")

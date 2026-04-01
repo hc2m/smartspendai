@@ -34,7 +34,9 @@ def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
     # print("Sending OTP to", data.email)
     # print("OTP", otp)  # remove it letter 
     
-    return({"success": "If email exists, OTP sent"}) 
+    return({"success": "If email exists, OTP sent",
+            "expiresAt": int(user.otp_expiry.timestamp() * 1000)  # milliseconds for JS
+            }) 
 
 @router.post("/auth/verify-otp")
 def verify_otp(data:VerifyOtpRequest, db: Session = Depends(get_db)):
