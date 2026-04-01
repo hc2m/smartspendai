@@ -116,7 +116,7 @@ def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
         httponly=True,
         secure=IS_PRODUCTION,
         samesite="none" if IS_PRODUCTION else "lax",
-        max_age=900,
+        max_age=60 * 60 * 24 * 7,
         domain=".smartspendai.org" if IS_PRODUCTION else None,
         path="/"
     )
