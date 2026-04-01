@@ -126,8 +126,20 @@ def login(user: UserLogin, response: Response, db:Session = Depends(get_db)):
 
 @router.post("/logout")
 def logout(response: Response):
-    response.delete_cookie("access_token")
-    response.delete_cookie("refresh_token")
+    response.delete_cookie(
+        key="access_token",
+        path="/",
+        domain=".smartspendai.org" if IS_PRODUCTION else None,
+        samesite="none" if IS_PRODUCTION else "lax",
+        secure=IS_PRODUCTION
+    )
+    response.delete_cookie(
+        key="refresh_token",
+        path="/",
+        domain=".smartspendai.org" if IS_PRODUCTION else None,
+        samesite="none" if IS_PRODUCTION else "lax",
+        secure=IS_PRODUCTION
+    )
     return {"success": "Logged out"}
 
 @router.get("/me")

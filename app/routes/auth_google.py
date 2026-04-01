@@ -25,10 +25,12 @@ oauth.register(
     client_kwargs = {"scope":"openid email profile"}
 )
 
+# //smartspend-ai-68ou.onrender.com
+
 # step 1: Redirect user to google
 @router.get("/auth/google")
 async def login_google(request: Request):
-    redirect_uri = "https://smartspend-ai-68ou.onrender.com/auth/google/callback"
+    redirect_uri = "https://api.smartspendai.org/auth/google/callback"
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 # step 2: callback from google
