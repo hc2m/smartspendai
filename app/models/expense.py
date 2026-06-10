@@ -8,7 +8,7 @@ class Expense(Base):
     id = Column(Integer, primary_key=True, index=True)
     amount = Column(Float, nullable=False)
     category = Column(String)
-    description = Column(String)
+    note = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow())
 
     user_id = Column(Integer, ForeignKey("users.id"))

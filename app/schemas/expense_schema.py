@@ -1,6 +1,11 @@
+# app/schemas/expense_schema.py
+
 from pydantic import BaseModel
+from typing import Optional
+
 
 class ExpenseCreate(BaseModel):
-    amount: float
     category: str
-    description: str
+    amount: float
+    date: Optional[str] = None
+    note: Optional[str] = None
