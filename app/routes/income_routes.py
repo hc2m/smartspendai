@@ -49,7 +49,7 @@ def add_income(
             "id": income.id,
             "source": income.source,
             "amount": income.amount,
-            "date": income.date,
+            "date": income.created_at,
             "note": income.note
         }
     }
