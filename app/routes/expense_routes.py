@@ -32,7 +32,7 @@ def add_expense(
     expense = Expense(
         category=data.category,
         amount=data.amount,
-        date=data.date,
+        created_at=data.date,
         note=data.note,
         user_id=user.id
     )
@@ -47,7 +47,7 @@ def add_expense(
             "id": expense.id,
             "category": expense.category,
             "amount": expense.amount,
-            "date": expense.date,
+            "date": expense.created_at,
             "note": expense.note
         }
     }
