@@ -45,6 +45,7 @@ app.include_router(income_routes.router)
 app.include_router(expense_routes.router)
 app.include_router(refresh_token_route.router)
 app.include_router(transactions_route.router)
+app.include_router(dashboard_routes.router)
 
 
 @app.on_event("startup")

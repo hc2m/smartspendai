@@ -49,14 +49,14 @@ def get_dashboard_data(db: Session, user_id: int):
     reverse=True
     )
 
-    last_transactions = transactions[:5]
+    # last_transactions = transactions[:5]
 
     return {
-        "total_income": total_income,
-        "total_expense": total_expense,
+        "totalIncome": total_income,
+        "totalExpense": total_expense,
         "savings": savings,
-        "savings_percent": savings_percent,
-        "last_transactions": last_transactions
+        "totalBalance": total_income - total_expense,
+        # "last_transactions": last_transactions
     }
 
 
