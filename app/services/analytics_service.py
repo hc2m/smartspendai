@@ -64,14 +64,20 @@ def get_category_expense(db: Session, user_id: int):
 
     data = db.query(
         Expense.category,
-        func.sum(Expense.amount)
+        func.sum(Expense.amount).label("total")
     ).filter(
         Expense.user_id == user_id
     ).group_by(
         Expense.category
     ).all()
 
-    return data
+    return [
+        {
+            "category": category,
+            "amount": float(total)
+        }
+        for category, total in data
+    ]
 
 def get_monthly_expense(db: Session, user_id: int):
 
